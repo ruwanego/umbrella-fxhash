@@ -1,3 +1,4 @@
+import { randNorm2 } from "@thi.ng/vectors/rand-norm";
 import { createRng, pick, weightedKey, type Rng } from "./rng.ts";
 import type { Rect, Vec2 } from "./scene.ts";
 
@@ -165,8 +166,8 @@ const createParticles = (
 		const thick = rng.minmax(0.5, 1) ** 1.5 * strokeWeight;
 		const tailLength = rng.minmaxInt(...minMaxTail);
 		const pos: Vec2 = [rng.minmax(0, 1), rng.minmax(0, 1)];
-		const dir = randNorm2(rng, speed);
-		const targetDir = randNorm2(rng, speed);
+		const dir = randNorm2([], speed, rng) as Vec2;
+		const targetDir = randNorm2([], speed, rng) as Vec2;
 		const tail = Array.from({ length: tailLength }, () => [...pos] as Vec2);
 		return {
 			color,
@@ -180,9 +181,3 @@ const createParticles = (
 			tail,
 		};
 	});
-
-export const randNorm2 = (rng: Rng, length: number): Vec2 => {
-	const vec: Vec2 = [rng.minmax(-1, 1), rng.minmax(-1, 1)];
-	const mag = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1]);
-	return mag >= 1e-6 ? [(vec[0] * length) / mag, (vec[1] * length) / mag] : vec;
-};

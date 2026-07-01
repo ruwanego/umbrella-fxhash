@@ -1,5 +1,15 @@
+import { add2 } from "@thi.ng/vectors/add";
+import { mixN2 } from "@thi.ng/vectors/mixn";
+import { normalize2 } from "@thi.ng/vectors/normalize";
+import { randMinMax2 } from "@thi.ng/vectors/rand-minmax";
+import { sub2 } from "@thi.ng/vectors/sub";
 import { resolveArtConfig, type ArtConfig, type ParticleConfig } from "./config.ts";
-import { createRng, type Rng, type Seed128 } from "./rng.ts";
+import {
+	createRng,
+	rngSnapshot,
+	type Rng,
+	type Seed128,
+} from "./rng.ts";
 import {
 	group,
 	polyline,
@@ -31,7 +41,7 @@ export const createGenerationState = (config: ArtConfig): GenerationState => {
 		config,
 		resolved,
 		particles: resolved.particles.map(cloneParticle),
-		rngState: rng.snapshot(),
+		rngState: rngSnapshot(rng),
 		frame: 0,
 	};
 };
@@ -56,7 +66,7 @@ export const stepGenerationState = (
 		...state,
 		config: { ...state.config, frame },
 		particles,
-		rngState: rng.snapshot(),
+		rngState: rngSnapshot(rng),
 		frame,
 	};
 };
@@ -112,29 +122,14 @@ const updateParticle = (particle: ParticleConfig, rng: Rng) => {
 	const { pos, dir, targetDir, speed, smooth, tail } = particle;
 	if (rng.probability(0.005) || !pointInside(PARTICLE_BOUNDS, pos)) {
 		const point = scatter(PARTICLE_BOUNDS, rng);
-		const next: Vec2 = [point[0] - pos[0], point[1] - pos[1]];
-		const mag = Math.sqrt(next[0] * next[0] + next[1] * next[1]);
-		targetDir[0] = next[0];
-		targetDir[1] = next[1];
-		if (mag >= 1e-6) {
-			targetDir[0] = (next[0] * speed) / mag;
-			targetDir[1] = (next[1] * speed) / mag;
-		}
+		normalize2(null, sub2(targetDir, point, pos), speed);
 	}
-	tail[0] = mix2(tail[0], pos, smooth);
+	mixN2(null, tail[0], pos, smooth);
 	for (let i = 1; i < tail.length; i++) {
-		tail[i] = mix2(tail[i], tail[i - 1], smooth);
+		mixN2(null, tail[i], tail[i - 1], smooth);
 	}
-	const mixed = mix2(dir, targetDir, 0.1);
-	const mag = Math.sqrt(mixed[0] * mixed[0] + mixed[1] * mixed[1]);
-	dir[0] = mixed[0];
-	dir[1] = mixed[1];
-	if (mag >= 1e-6) {
-		dir[0] = (mixed[0] * speed) / mag;
-		dir[1] = (mixed[1] * speed) / mag;
-	}
-	pos[0] += dir[0];
-	pos[1] += dir[1];
+	normalize2(null, mixN2(null, dir, targetDir, 0.1), speed);
+	add2(null, pos, dir);
 };
 
 const pointInside = ({ pos, size }: Rect, point: Vec2): boolean =>
@@ -144,16 +139,12 @@ const pointInside = ({ pos, size }: Rect, point: Vec2): boolean =>
 	point[1] <= pos[1] + size[1];
 
 const scatter = (bounds: Rect, rng: Rng): Vec2 => {
+	const max: Vec2 = [
+		bounds.pos[0] + bounds.size[0],
+		bounds.pos[1] + bounds.size[1],
+	];
 	while (true) {
-		const point: Vec2 = [
-			rng.minmax(bounds.pos[0], bounds.pos[0] + bounds.size[0]),
-			rng.minmax(bounds.pos[1], bounds.pos[1] + bounds.size[1]),
-		];
+		const point = randMinMax2([], bounds.pos, max, rng) as Vec2;
 		if (pointInside(bounds, point)) return point;
 	}
 };
-
-const mix2 = (a: Vec2, b: Vec2, t: number): Vec2 => [
-	a[0] + (b[0] - a[0]) * t,
-	a[1] + (b[1] - a[1]) * t,
-];

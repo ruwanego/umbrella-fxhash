@@ -21,9 +21,12 @@
 		"vite-plugin-html": "^3.2.2"
 	},
 	"dependencies": {
+		"@thi.ng/base-n": "^2.7.71",
 		"@thi.ng/date": "^2.8.10",
 		"@thi.ng/dl-asset": "^2.3.146",
-		"@thi.ng/expose": "^1.2.87"
+		"@thi.ng/expose": "^1.2.87",
+		"@thi.ng/random": "^4.1.52",
+		"@thi.ng/vectors": "^8.6.36"
 	},
 	"browsersList": [
 		"last 3 chrome versions"

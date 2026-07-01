@@ -42,16 +42,22 @@ Key files:
 
 ### thi.ng/umbrella packages used
 
-Only shell-level utility packages remain from the
-[thi.ng/umbrella](https://thi.ng/umbrella) ecosystem. Core generation no longer
-depends on thi.ng geometry, canvas, vector, resolver, transducer, or fxhash RNG
-packages.
+The project uses [thi.ng/umbrella](https://thi.ng/umbrella) packages where they
+fit the dependency boundary. Pure deterministic helpers are allowed in
+`src/core/`; browser, download, and debug helpers stay in `src/shell/`.
 
-| Package                                     | Role in this project                     |
-| ------------------------------------------- | ---------------------------------------- |
-| [@thi.ng/date](https://thi.ng/date)         | Timestamp formatter for media downloads  |
-| [@thi.ng/dl-asset](https://thi.ng/dl-asset) | Canvas & SVG export/download             |
-| [@thi.ng/expose](https://thi.ng/expose)     | Expose debug state during development    |
+| Package                                     | Role in this project                         |
+| ------------------------------------------- | -------------------------------------------- |
+| [@thi.ng/base-n](https://thi.ng/base-n)     | Base58 alphabet used for fxhash seed parsing |
+| [@thi.ng/random](https://thi.ng/random)     | Explicit seeded SFC32 RNG and random choices |
+| [@thi.ng/vectors](https://thi.ng/vectors)   | Pure 2D vector math in the generator         |
+| [@thi.ng/date](https://thi.ng/date)         | Timestamp formatter for media downloads      |
+| [@thi.ng/dl-asset](https://thi.ng/dl-asset) | Canvas & SVG export/download                 |
+| [@thi.ng/expose](https://thi.ng/expose)     | Expose debug state during development        |
+
+The core still avoids `@thi.ng/random-fxhash` because that package initializes
+from fxhash globals at import time. The shell reads fxhash data and passes an
+explicit seed into the core instead.
 
 ## Getting started
 
