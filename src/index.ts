@@ -24,7 +24,7 @@ declare global {
 }
 // flag to guard code blocks which are only wanted during development
 // any `if (DEBUG) { ... }` code blocks will be removed in production builds
-const DEBUG = process.env.NODE_ENV !== "production";
+const DEBUG = import.meta.env.DEV;
 
 let STATE: State;
 let timer: number;
