@@ -11,7 +11,8 @@
 		"start": "vite --open --host",
 		"build": "tsc && vite build --base=./",
 		"preview": "vite preview --open --host",
-		"bundle": "yarn build && (cd dist && zip fxh-$(date +%s).zip assets/*.* index.html fxhash.min.js)"
+		"bundle": "yarn build && (cd dist && zip fxh-$(date +%s).zip assets/*.* index.html fxhash.min.js)",
+		"test": "node --experimental-strip-types --test src/tests/determinism.test.ts"
 	},
 	"devDependencies": {
 		"@types/node": "26.1.0",
@@ -20,16 +21,9 @@
 		"vite-plugin-html": "^3.2.2"
 	},
 	"dependencies": {
-		"@thi.ng/canvas": "^1.1.18",
 		"@thi.ng/date": "^2.8.10",
 		"@thi.ng/dl-asset": "^2.3.146",
-		"@thi.ng/expose": "^1.2.87",
-		"@thi.ng/geom": "^8.3.34",
-		"@thi.ng/hiccup-canvas": "^3.2.27",
-		"@thi.ng/random-fxhash": "^0.3.116",
-		"@thi.ng/resolve-map": "^7.1.138",
-		"@thi.ng/transducers": "^9.6.40",
-		"@thi.ng/vectors": "^8.6.36"
+		"@thi.ng/expose": "^1.2.87"
 	},
 	"browsersList": [
 		"last 3 chrome versions"

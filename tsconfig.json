@@ -5,6 +5,8 @@
 		"module": "esnext",
 		"target": "esnext",
 		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"types": ["node", "vite/client"],
 		"allowSyntheticDefaultImports": true,
 		"verbatimModuleSyntax": true,
 		"noEmit": true,
