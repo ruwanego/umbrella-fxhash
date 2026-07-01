@@ -1,0 +1,48 @@
+{
+	"name": "TODO",
+	"version": "1.0.0",
+	"private": true,
+	"description": "TODO",
+	"repository": "https://github.com/TODO/TODO",
+	"author": "TODO",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"start": "vite --open --host",
+		"build": "tsc && vite build --base=./",
+		"preview": "vite preview --open --host",
+		"bundle": "yarn build && (cd dist && zip fxh-$(date +%s).zip assets/*.* index.html fxhash.min.js)"
+	},
+	"devDependencies": {
+		"@types/node": "24.10.1",
+		"typescript": "^5.9.3",
+		"vite": "^7.2.6",
+		"vite-plugin-html": "^3.2.2"
+	},
+	"dependencies": {
+		"@thi.ng/canvas": "^1.1.2",
+		"@thi.ng/date": "^2.7.72",
+		"@thi.ng/dl-asset": "^2.3.129",
+		"@thi.ng/expose": "^1.2.70",
+		"@thi.ng/geom": "^8.3.8",
+		"@thi.ng/hiccup-canvas": "^3.2.2",
+		"@thi.ng/random-fxhash": "^0.3.98",
+		"@thi.ng/resolve-map": "^7.1.121",
+		"@thi.ng/transducers": "^9.6.18",
+		"@thi.ng/vectors": "^8.6.14"
+	},
+	"browsersList": [
+		"last 3 chrome versions"
+	],
+	"browser": {
+		"process": false
+	},
+	"keywords": [
+		"art",
+		"fxhash",
+		"generative",
+		"nft",
+		"thing-umbrella",
+		"typescript"
+	]
+}
